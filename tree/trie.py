@@ -35,7 +35,13 @@ class Trie:
         Space Complexity: O(L) in the worst case (all new characters).
         """
         # TODO: Implement this function
-        pass
+        curr = self.root
+
+        for char in word:
+            if char not in curr.children:
+                curr.children[char] = TrieNode()
+            curr = curr.children[char]
+        curr.is_end_of_word = True
 
     def search(self, word: str) -> bool:
         """
@@ -45,7 +51,13 @@ class Trie:
         Space Complexity: O(1)
         """
         # TODO: Implement this function
-        pass
+        curr = self.root
+
+        for char in word:
+            if char not in curr.children:
+                return False
+            curr = curr.children[char]
+        return curr.is_end_of_word
 
     def starts_with(self, prefix: str) -> bool:
         """
@@ -55,7 +67,13 @@ class Trie:
         Space Complexity: O(1)
         """
         # TODO: Implement this function
-        pass
+        curr = self.root
+
+        for char in prefix:
+            if char not in curr.children:
+                return False
+            curr = curr.children[char]
+        return True
 
     def tokenize(self, text: str) -> List[str]:
         """
@@ -73,7 +91,20 @@ class Trie:
         Space Complexity target: O(N) for storing tokens.
         """
         # TODO: Implement this function
-        pass
+        res = []
+        curr = self.root # start at the root
+        token = '' # initialize token
+        for char in text:
+            if char in curr.children:
+                token += char
+                curr = curr.children[char]
+            elif token:
+                res.append(token)
+                token = char
+                curr = self.root if char not in self.root.children else self.root.children[char]
+        res.append(token)
+        return res
+            
 
 
 # --- Verification Tests ---
