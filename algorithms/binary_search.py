@@ -24,7 +24,16 @@ def binary_search(nums: List[int], target: int) -> int:
     Space Complexity target: O(1)
     """
     # TODO: Implement this function
-    pass
+    l, r = 0, len(nums) - 1
+    while l <= r:
+        m = (l + r) // 2
+        if target == nums[m]:
+            return m
+        elif target > nums[m]:
+            l = m + 1
+        else:
+            r = m - 1
+    return -1
 
 def search_insert_position(nums: List[float], target: float) -> int:
     """
@@ -35,7 +44,16 @@ def search_insert_position(nums: List[float], target: float) -> int:
     Space Complexity target: O(1)
     """
     # TODO: Implement this function
-    pass
+    l, r = 0, len(nums) - 1
+    while l <= r:
+        m = (l + r) // 2
+        if target == nums[m]:
+            return m
+        elif target > nums[m]:
+            l = m + 1
+        else:
+            r = m - 1
+    return l
 
 def find_threshold_for_percentile(sorted_scores: List[float], percentile: float) -> float:
     """
