@@ -47,12 +47,15 @@ class AdamOptimizer:
         self.t += 1
         
         for key in params.keys():
-            if key not in self.m:
+            if key not in self.m: # initialize the moment vectors when the model is first built
                 self.m[key] = np.zeros_like(params[key])
                 self.v[key] = np.zeros_like(params[key])
                 
-            # TODO: Implement parameter update equations for each parameter key
-            pass
+            self.m[key] = self.beta1 * self.m[key] + (1 - self.beta1) * grads[key] # weighted ave for first moment
+            self.v[key] = self.beta2 * self.v[key] + (1 - self.beta2) * (grads[key] ** 2) # weighted ave for second moment
+            m_hat = self.m[key] / (1 - self.beta1 ** self.t) # bias correction
+            v_hat = self.v[key] / (1 - self.beta2 ** self.t) # bias correction
+            params[key] = params[key] - (self.lr / (np.sqrt(v_hat) + self.eps)) * m_hat # update weights
 
 
 # --- Verification Tests ---

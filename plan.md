@@ -63,9 +63,38 @@ These templates test your mathematical understanding of model architectures, opt
 
 ---
 
+## 3. Core Recommender System Concepts
+*These theoretical and structural concepts map directly to the TikTok recommendation loop requirements.*
+
+### A. Two-Stage Recommender Architecture
+*   **Retrieval (Candidate Generation):** Filters down $10^7 - 10^8$ items to $\sim 10^3$ candidates in $< 10\text{ms}$. Uses **Two-Tower Neural Networks** (User Tower, Item Tower) outputting embeddings. Vectors are indexed and queried using **Approximate Nearest Neighbors (ANN)** architectures like HNSW (Hierarchical Navigable Small World) or IVF-PQ (Inverted File Product Quantization).
+*   **Ranking (Scoring):** Scores the $\sim 10^3$ candidates using heavy deep neural nets to predict click probability (CTR) and conversion probability (CVR).
+*   **Re-ranking / Diversification:** Balances coverage, relevance, and user experience. Employs diversity algorithms like **Maximal Marginal Relevance (MMR)** or Determinantal Point Processes (DPP) to prevent repetitive categories in user feeds.
+
+### B. Multi-Task & Multi-Objective Learning (MTL)
+*   **ESMM (Entire Space Multi-Task Model):** Solves *sample selection bias* in post-click Conversion Rate (CVR) estimation by modeling click-through-and-conversion rate ($p(\text{CTCVR}) = p(\text{CTR}) \times p(\text{CVR})$) over the entire exposure space rather than predicting CVR exclusively on clicked samples.
+*   **MMoE (Multi-gate Mixture-of-Experts):** Shares underlying MLP expert networks across tasks while employing task-specific softmax gates. This dynamically weights expert outputs to accommodate conflicting training objectives (e.g. watch-time vs. CTR).
+
+### C. User Sequential & Short/Long-Term Interest Modeling
+*   **DIN (Deep Interest Network):** Uses local target attention over past user historical behavior embeddings to generate a dynamic user representation tailored to the specific target candidate item.
+*   **SASRec & BST (Behavior Sequence Transformer):** Employs self-attention Transformer blocks over the chronological sequence of user actions to capture long-term sequential dependencies.
+
+### D. Classical Feature Interaction Architectures
+*   **Factorization Machines (FM):** Models low-order explicit pairwise feature interactions ($x_i \cdot x_j$) using dot products of latent vectors in linear $O(K \cdot N)$ execution time.
+*   **DeepFM:** Integrates a parallel FM component and deep MLP component, sharing a single embedding layer, to capture both low- and high-order feature interactions.
+*   **Wide & Deep:** Unifies a generalized linear model (Wide part for memorizing specific feature crossings) with a feed-forward neural network (Deep part for generalizing to new pattern extensions).
+
+### E. Training Mechanics & Negative Sampling
+*   **In-batch Negatives:** Approximates softmax normalization dynamically by treating items of other users in the same training mini-batch as negative samples.
+*   **Popularity Bias Correction:** Deducts popularity log-prob adjustment ($s(u, i) - \log(p_i)$) from logits during training to prevent the model from over-indexing popular items.
+*   **Hard Negative Mining:** Ingests "exposed-but-unclicked" items or candidates that passed retrieval but were filtered by the ranker to provide challenging negative boundaries.
+
+---
+
 ## Mode of Operation (Mock Interviews)
 
 1.  **Context-Aware Triggers:** Pull only from the active team track specified in the prompt.
 2.  **No Fluff / Strict Persona:** Act as a senior technical bar-raiser. Lead directly with technical scenarios, code constraints, or math problems without filler praise.
 3.  **Strict Hint Economy:** Point out logic flaws in test cases or ask structural questions; do not give away algorithms or solutions directly.
 4.  **Deep Technical Evaluation:** Probe for mathematical formulations, matrix dimensions, hardware/memory constraints, and optimization trade-offs.
+
