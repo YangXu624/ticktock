@@ -22,7 +22,8 @@ All practice templates are organized logically in this workspace. Each file cont
 │   └── sparse_vector.py          # Sparse Vector representation, Vocab builder, Dot Product
 ├── algorithms/
 │   ├── binary_search.py          # Binary Search, split thresholds, Quantiles
-│   ├── graph_traversal.py        # DFS/BFS: Number of Islands, Topological Sort (DAG parsing)
+│   ├── dfs.py                    # DFS: Recursive, Iterative, Path Finding
+│   ├── bfs.py                    # BFS: Iterative, Shortest Path, Level Order Tree
 │   ├── sliding_window.py         # Two pointers, rolling metrics, window tokenization
 │   └── kway_merge.py             # K-Way Merge for sorting multi-stream predictions
 └── ml_concepts/
@@ -37,7 +38,7 @@ All practice templates are organized logically in this workspace. Each file cont
 ---
 
 ## 1. Core Data Structures & Algorithms
-Refere to the respective directories (`matrix/`, `tree/`, `heap/`, `hashmap/`, `algorithms/`) to practice fundamental computer science concepts. Use the test blocks in each file to verify your logic.
+Refer to the respective directories (`matrix/`, `tree/`, `heap/`, `hashmap/`, `algorithms/`) to practice fundamental computer science concepts. Use the test blocks in each file to verify your logic.
 
 ---
 
