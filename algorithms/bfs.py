@@ -63,10 +63,14 @@ def bfs_shortest_path(adj_list: Dict[int, List[int]], start: int, target: int) -
     """
     # TODO: Implement this function (store path state or parent pointers in a dict)
     queue = deque([start])
-    parents = {} # end : begin
+    parents = {start: None} # begin : end
+
+    visited = {}
+
     while queue:
         curr = queue.popleft()
-        parents[begin]
+        visited.add(curr)
+        
 
 
 def level_order_traversal(root: Optional[TreeNode]) -> List[List[int]]:
