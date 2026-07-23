@@ -31,7 +31,7 @@ class OrderedDict:
     def get(self, key, default=None):
         """Returns the value of the key if it exists, otherwise default."""
         # TODO: Implement this method
-        pass
+        return self.map[key].val if key in self.map else default
 
     def put(self, key, value) -> None:
         """
@@ -40,12 +40,28 @@ class OrderedDict:
         If key is new, inserts it at the end (before dummy tail).
         """
         # TODO: Implement this method
-        pass
+        if key in self.map:
+            self.map[key].val = value # update value
+        else:
+            new_node = Node(key=key, val=value)
+            prev_node = self.tail.prev # keep reference to current last node
+            new_node.prev = prev_node # insert new last node
+            new_node.next = self.tail # connect to tail
+            prev_node.next = new_node # connect current last node to new last node
+            self.tail.prev = new_node # connect tail to new last node
+            self.map[key] = new_node # insert node to dict
+
 
     def delete(self, key) -> bool:
         """Removes the key from the dictionary. Returns True if removed, else False."""
         # TODO: Implement this method
-        pass
+        if key not in self.map:
+            return False
+        else:
+            self.map[key].prev.next = self.map[key].next
+            self.map[key].next.prev = self.map[key].prev
+            del self.map[key]
+            return True
 
     def move_to_end(self, key, last: bool = True) -> None:
         """
