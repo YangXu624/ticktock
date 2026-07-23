@@ -69,7 +69,28 @@ class OrderedDict:
         of the doubly linked list. Raises KeyError if key does not exist.
         """
         # TODO: Implement this method
-        pass
+        if key not in self.map:
+            raise KeyError
+        
+        node = self.map[key] # store as a new variable
+
+        # step 1: remove node safely from current position
+        node.prev.next = node.next
+        node.next.prev = node.prev
+        
+        # step 2: insert it at the end
+        if last:
+            prev = self.tail.prev
+            prev.next = node
+            node.prev = prev
+            node.next = self.tail
+            self.tail.prev = node
+        else:
+            next_node = self.head.next
+            next_node.prev = node
+            node.next = next_node
+            node.prev = self.head
+            self.head.next = node
 
     def popitem(self, last: bool = True) -> tuple:
         """
@@ -79,7 +100,21 @@ class OrderedDict:
         Raises KeyError if the dictionary is empty.
         """
         # TODO: Implement this method
-        pass
+        if not self.map:
+            raise KeyError
+        
+        if last:
+            node = self.tail.prev
+        else:
+            node = self.head.next
+
+        # safely detach it
+        node.prev.next = node.next
+        node.next.prev = node.prev
+
+        del self.map[node.key]
+
+        return (node.key, node.val)
 
     def keys(self) -> list:
         """Returns a list of keys in the insertion order."""
