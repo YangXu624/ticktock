@@ -28,7 +28,11 @@ def stable_softmax(x: np.ndarray, axis: int = -1) -> np.ndarray:
     Formula: exp(x_i - max(x)) / sum(exp(x_j - max(x)))
     """
     # TODO: Implement this function
-    pass
+    max_x = np.max(x, keepdims=True)
+
+    exp_x = np.exp(x - max_x)
+
+    return exp_x / np.sum(exp_x, axis=axis, keepdims=True)
 
 def scaled_dot_product_attention(Q: np.ndarray, K: np.ndarray, V: np.ndarray, mask: np.ndarray = None) -> tuple[np.ndarray, np.ndarray]:
     """
@@ -44,7 +48,19 @@ def scaled_dot_product_attention(Q: np.ndarray, K: np.ndarray, V: np.ndarray, ma
       attention_weights: (..., seq_len_q, seq_len_k)
     """
     # TODO: Implement this function
-    pass
+    d_k = Q.shape[-1]
+
+    scores = np.matmul(Q, K.swapaxes(-1, -2)) / np.sqrt(d_k) # use swapaxes instead of .T because the latter affects all dimensions of K
+    # swapaxes swaps the last 2 dimensions, effectively transposing them
+
+    if mask is not None:
+        scores = np.where(mask, -1e9, scores)
+
+    attention_weights = stable_softmax(scores, axis=-1)
+
+    output = np.matmul(attention_weights, V)
+
+    return output, attention_weights
 
 class MultiHeadAttention:
     def __init__(self, d_model: int, num_heads: int):
