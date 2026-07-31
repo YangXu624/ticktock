@@ -28,7 +28,7 @@ def stable_softmax(x: np.ndarray, axis: int = -1) -> np.ndarray:
     Formula: exp(x_i - max(x)) / sum(exp(x_j - max(x)))
     """
     # TODO: Implement this function
-    max_x = np.max(x, keepdims=True)
+    max_x = np.max(x, axis=axis, keepdims=True)
 
     exp_x = np.exp(x - max_x)
 
@@ -94,7 +94,27 @@ class MultiHeadAttention:
         # 5. Apply output projection self.W_o
         
         # TODO: Implement this method
-        pass
+        Q = X @ self.W_q
+        K = X @ self.W_k
+        V = X @ self.W_v # currently size (batch_size, seq_len, d_model)
+
+        Q = Q.reshape(batch_size, seq_len, self.num_heads, self.d_k).swapaxes(-2, -3) # (batch_size, num_heads, seq_len, d_k)
+        K = K.reshape(batch_size, seq_len, self.num_heads, self.d_k).swapaxes(-2, -3) # (batch_size, num_heads, seq_len, d_k)
+        V = V.reshape(batch_size, seq_len, self.num_heads, self.d_k).swapaxes(-2, -3) # (batch_size, num_heads, seq_len, d_k)
+
+        if mask is not None and mask.ndim == 3:
+            mask = mask[:, np.newaxis, :, :] # reshape mask if necessary
+
+        output, attention_weights = scaled_dot_product_attention(Q=Q, K=K, V=V, mask=mask)
+        # output is of size (batch_size, num_heads, seq_len, d_v)
+        # attention_weights: (batch_size, num_heads, seq_len, seq_len)
+
+        output = output.swapaxes(-2, -3).reshape(batch_size, seq_len, d_model) # size is now (batch_size, seq_len, d_model)
+
+        output = output @ self.W_o # W_o is size (d_model, d_model)
+        # output size is (batch_size, seq_len, d_model)
+
+        return output
 
 
 # --- Verification Tests ---
