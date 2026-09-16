@@ -1,11 +1,24 @@
-# Ignore resume files and interview preparation roadmaps
-resume.pdf
-resume_prep.pdf
-resume_prep.md
-round2_prep.md
-round1_debrief.md
-round1_debrief.pdf
-round2_debrief.md
-round2_debrief.pdf
+# Resume files, interview preparation notes, and round debriefs
+resume*
+*prep.md
+*prep.pdf
+*debrief.md
+*debrief.pdf
 
+# OS generated files
 .DS_Store
+Thumbs.db
+
+# Python & Jupyter artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environments & IDE configuration
+.venv/
+env/
+venv/
+.vscode/
+.idea/
