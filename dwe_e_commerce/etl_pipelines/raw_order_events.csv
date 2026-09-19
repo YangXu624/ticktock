@@ -1,0 +1,7 @@
+event_id,order_id,buyer_id,seller_id,item_id,gross_amount,discount_amount,status,timestamp
+evt_101,ord_001,usr_99,slr_12,itm_55,120.50,10.00,CREATED,2026-09-19T08:00:00Z
+evt_102,ord_001,usr_99,slr_12,itm_55,120.50,10.00,PAID,2026-09-19T08:05:00Z
+evt_103,ord_002,,slr_14,itm_99,50.00,0.00,PAID,2026-09-19T08:10:00Z
+evt_104,ord_003,usr_42,slr_12,itm_10,200.00,20.00,PAID,2026-09-19T08:15:00Z
+evt_105,ord_004,usr_15,slr_08,itm_03,-15.00,0.00,PAID,2026-09-19T08:20:00Z
+evt_106,ord_005,usr_77,slr_19,itm_88,350.00,50.00,REFUNDED,2026-09-19T08:25:00Z
